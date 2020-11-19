@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czj.springboot.dao.CustomerMapper">
+
+    <resultMap id="CustomerResultMap" type="com.czj.springboot.model.Customer">
+        <id property="id" column="id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="storeCode" column="store_code"/>
+        <result property="storeName" column="store_name"/>
+        <result property="customerCode" column="customer_code"/>
+        <result property="customerTagId" column="customer_tag_id"/>
+        <result property="expiredPoints" column="expired_points"/>
+        <result property="expiryDate" column="expiry_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDateTime" column="create_date_time"/>
+        <result property="modifiedBy" column="modified_by"/>
+        <result property="modifiedDateTime" column="modified_date_time"/>
+    </resultMap>
+
+    <select id="findCustomer" parameterType="string" resultMap="CustomerResultMap">
+        SELECT *
+        FROM fr_customer
+        where customer_tag_id = #{customerTagId}
+        order by store_name
+    </select>
+
+    <update id="saveStore" parameterType="string">
+        update fr_customer fc left join (select distinct fc.store_id, cbk.id, cbk.khdm, cbk.khmc
+                                         from fr_customer fc
+                                                  inner join com_base_kehu cbk on fc.store_code = cbk.khdm
+                                         where fc.customer_tag_id = #{customerTagId}
+                                           and fc.store_id is null) t1 on fc.store_code = t1.khdm
+        set fc.store_name = t1.khmc,
+            fc.store_id   = t1.id
+        where fc.customer_tag_id = #{customerTagId}
+          and fc.store_id is null
+    </update>
+
+    <update id="updateCustomer" parameterType="com.mss.invitation.model.Customer">
+        update fr_customer
+        set store_name=null,
+            expired_points=#{customer.expiredPoints},
+            expiry_date=#{customer.expiryDate},
+            store_id = null,
+            store_code = #{customer.storeCode}
+        WHERE customer_code = #{customer.customerCode}
+          and customer_tag_id = #{customer.customerTagId}
+    </update>
+
+    <delete id="deleteCustomer" parameterType="string">
+        delete
+        from fr_customer
+        where customer_tag_id = #{customerTagId}
+    </delete>
+
+    <select id="filterStore" resultType="java.lang.String">
+        select distinct store_code
+        from fr_customer
+        where store_id is null
+    </select>
+</mapper>
