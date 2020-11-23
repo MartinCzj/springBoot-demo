@@ -1,6 +1,11 @@
 server:
-  # ·þÎñ¶Ë¿Ú
   port: 8080
+
+mybatis:
+  typeAliasesPackage: com.czj.springboot.model
+  configLocation: classpath:config/mybatis.xml
+  mapUnderscoreToCamelCase: true
+  mapper-locations: classpath:mapper/*.xml
 
 spring:
   datasource:
