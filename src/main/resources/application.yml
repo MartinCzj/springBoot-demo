@@ -7,9 +7,61 @@ mybatis:
   mapUnderscoreToCamelCase: true
   mapper-locations: classpath:mapper/*.xml
 
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+
 spring:
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.100.111.181:3307/mss?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
-    username: root
-    password: 37laQcNS
+    master:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://39.100.111.181:3307/mss?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+      username: root
+      password: 37laQcNS
+    slave:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://39.100.111.181:3307/test?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+      username: root
+      password: 37laQcNS
+#    druid:
+#      filters: stat,wall,log4j,config
+#      max-active: 100
+#      initial-size: 1
+#      max-wait: 60000
+#      min-idle: 1
+#      time-between-eviction-runs-millis: 60000
+#      min-evictable-idle-time-millis: 300000
+#      validation-query: select 'x'
+#      test-while-idle: true
+#      test-on-borrow: false
+#      test-on-return: false
+#      pool-prepared-statements: true
+#      max-open-prepared-statements: 50
+#      max-pool-prepared-statement-per-connection-size: 20
+
+#spring:
+#  datasource:
+#    name: druidDataSource
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    druid:
+#      driverClassName: com.mysql.cj.jdbc.Driver
+#      url: jdbc:mysql://39.100.111.181:3307/mss?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+#      username: root
+#      password: 37laQcNS
+#      filters: stat,wall,log4j,config
+#      max-active: 100
+#      initial-size: 1
+#      max-wait: 60000
+#      min-idle: 1
+#      time-between-eviction-runs-millis: 60000
+#      min-evictable-idle-time-millis: 300000
+#      validation-query: select 'x'
+#      test-while-idle: true
+#      test-on-borrow: false
+#      test-on-return: false
+#      pool-prepared-statements: true
+#      max-open-prepared-statements: 50
+#      max-pool-prepared-statement-per-connection-size: 20

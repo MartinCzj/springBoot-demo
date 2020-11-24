@@ -5,6 +5,9 @@ import com.czj.springboot.common.QueryParam;
 import com.czj.springboot.dao.CustomerMapper;
 import com.czj.springboot.model.Customer;
 import com.czj.springboot.service.CustomerService;
+import com.czj.springboot.util.PageUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +23,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public PageResult<Customer> findCustomer(QueryParam param, String customerTagId) {
-        List<Customer> customer = customerMapper.findCustomer(param,customerTagId);
-        return new PageResult(customer);
+    public PageResult findCustomer(QueryParam param) {
+        PageHelper.startPage(param.getCurrentPage(),param.getPageSize());
+        List<Customer> customer = customerMapper.findCustomer(param);
+
+        PageInfo<Customer> customerPageInfo = new PageInfo<>(customer);
+
+        return PageUtil.getPageResult(customerPageInfo);
+    }
+
+    @Override
+    public List findCategory() {
+        return customerMapper.selectAll();
     }
 
 }

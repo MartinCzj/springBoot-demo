@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @Builder
 public class QueryParam {
+  private String id;
   private String name;
   private int currentPage = 1;
   private int pageSize = 10;

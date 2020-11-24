@@ -18,12 +18,21 @@
         <result property="modifiedBy" column="modified_by"/>
         <result property="modifiedDateTime" column="modified_date_time"/>
     </resultMap>
-
-    <select id="findCustomer" parameterType="string" resultMap="CustomerResultMap">
+    <sql id="param">
+        <where>
+            <if test="param != null and param.id != null">
+                AND customer_tag_id = #{param.id}
+            </if>
+        </where>
+    </sql>
+    <select id="findCustomer" resultMap="CustomerResultMap">
         SELECT *
         FROM fr_customer
-        where customer_tag_id = #{customerTagId}
+        <include refid="param" />
         order by store_name
+    </select>
+    <select id="selectAll" resultType="com.czj.springboot.model.Category">
+        select * from category
     </select>
 
 </mapper>
