@@ -2,11 +2,7 @@ package com.czj.springboot.controller;
 
 import com.czj.springboot.common.PageResult;
 import com.czj.springboot.common.QueryParam;
-import com.czj.springboot.config.DataSource;
-import com.czj.springboot.config.DynamicDataSourceContextHolder;
-import com.czj.springboot.model.Customer;
 import com.czj.springboot.service.CustomerService;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,6 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @DataSource(value = "master")
     @ApiOperation("寻找客户")
     @PostMapping(value = "/findCustomer")
     public PageResult findCustomer( @RequestParam(value = "currentPage",defaultValue = "1") int currentPage,
@@ -37,9 +32,7 @@ public class CustomerController {
 
     @ApiOperation("测试多数据源")
     @PostMapping(value = "/findCategory")
-    @DataSource(value = "slave")
     public List testDataSource(){
-        DynamicDataSourceContextHolder.setDataSourceKey("slave");
         List category = customerService.findCategory();
         return category;
     }
